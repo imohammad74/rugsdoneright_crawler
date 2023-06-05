@@ -21,7 +21,6 @@ class GetBrandsURL:
         params = {
             'brand': brand,
             'url': url,
-            're': re,
             'soup': soup
         }
         GetAllBrandsURL(params=params)
@@ -30,7 +29,9 @@ class GetBrandsURL:
         max_worker = Common.max_worker()
         brands_url = db.fetch_datas(db_file=db.db_file(), table_name=db.db_table()[1], all_columns=True)
         for i in range(len(brands_url)):
-            brand = {'brand': brands_url[i][1], 'url_address': brands_url[i][2]}
-            self.main(brand)
-            time.sleep(2)
+            brand_name = brands_url[i][1]
+            brand_url = brands_url[i][2]
+            if brand_url != '' or brand_url is not None:
+                brand = {'brand': brand_name, 'url_address': brand_url}
+                self.main(brand)
         # Worker(fn=self.main, data=brands, max_worker=max_worker)

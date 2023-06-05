@@ -3,7 +3,7 @@ import os
 import requests
 
 from common import Common
-from table import PriceTable
+# from table import PriceTable
 
 
 class PDPElements:
@@ -17,7 +17,7 @@ class PDPElements:
 
     @staticmethod
     def is_in_stock(soup) -> bool:
-        if soup.find(class_='pdp-title'):
+        if soup.find(class_='title page-title'):
             return True
         else:
             return False
@@ -32,7 +32,7 @@ class PDPElements:
     @staticmethod
     def title(soup) -> str:
         """get title of pdp"""
-        title = soup.find(class_='pdp-title').text
+        title = soup.find('h1', {'class': 'title page-title'}).text
         title = Common.remove_quotes(title)
         return title
 
@@ -116,3 +116,21 @@ class PDPElements:
         collection = Common.remove_quotes(collection)
         collection = collection.strip()
         return collection
+
+    @staticmethod
+    def price(soup) -> str:
+        product_price_box = soup.find(class_='price-wrapper')
+        product_price = product_price_box.find(class_='product-price').text
+        price = product_price.replace('$', '')
+        return price
+
+    @staticmethod
+    def sku(soup) -> str:
+        categories = soup.find_all('div', {'class': 'hprod-details'})
+        for category in categories:
+            subject = category.find('b').text
+            if subject == 'SKU #':
+                sku = category.find(class_='hprod-details-b').text
+                return sku
+
+

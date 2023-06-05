@@ -1,28 +1,29 @@
 import re
-
+import math
 from db import DBManagement as db
 
 
 class Common:
 
     @staticmethod
-    def last_url(total_product):
+    def last_url(total_product: int) -> list:
         """
         this function helps to get end of urls.
         for ex: https://rugs.rugstudio.com/newnav/96 ; 96 is returned by this function.
         """
-        show_product_in_plp = 48
-        end_url_list = [int(i) for i in range(0, int(total_product), show_product_in_plp)]
-        return end_url_list
+        plp_show = 100
+        total_pages = math.ceil(total_product/plp_show)
+        urls = [i for i in range(total_pages)]
+        return urls
 
     @staticmethod
-    def number_of_product(soup):
+    def number_of_product(soup) -> int:
         """
         this function helps to find last pages of plp.
         """
-        total_product_string = soup.find_all(class_='pageLink')
-        number_of_product = int(total_product_string[-1].text) * 48
-        return number_of_product
+        total_product_string = soup.find(class_='col-sm-6 text-right').text
+        total_product = int(total_product_string.split(' ')[5])
+        return total_product
 
     @staticmethod
     def get_url(plp_url):

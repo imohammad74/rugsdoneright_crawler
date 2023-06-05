@@ -34,6 +34,10 @@ class PDP:
             except:
                 title = ''
             try:
+                sku = PDPElements.sku(soup)
+            except:
+                sku = ''
+            try:
                 collection = PDPElements().collection(soup)
             except:
                 collection = ''
@@ -72,16 +76,9 @@ class PDP:
                     sale_price = ''
                 all_columns = [
                     {'column': 'title', 'value': title},
-                    {'column': 'description', 'value': description},
+                    {'column': 'sku', 'value': sku},
                     {'column': 'url', 'value': url},
-                    {'column': 'size', 'value': size},
-                    {'column': 'shape', 'value': shape},
                     {'column': 'brand', 'value': brand},
-                    {'column': 'weave', 'value': construction},
-                    {'column': 'material', 'value': material},
-                    {'column': 'msrp', 'value': msrp},
-                    {'column': 'collection', 'value': collection},
-                    {'column': 'design_id', 'value': design_id},
                     {'column': 'sale_price', 'value': sale_price}
                 ]
                 try:
@@ -99,5 +96,4 @@ class PDP:
 
 
     def __init__(self, data):
-        time.sleep(2)
         self.main(data)

@@ -1,11 +1,9 @@
-import time
 from datetime import datetime
 
 import requests
 from bs4 import BeautifulSoup
-
-from common import Common
 from db import DBManagement as db
+from common import Common
 
 now = datetime.now()
 
@@ -23,16 +21,16 @@ class GetAllBrandsURL:
             if url == 0:
                 plp_url = main_url
             else:
-                plp_url = f"{main_url}/{url}"
-            time.sleep(2)
+                plp_url = f"{main_url}&page={url}"
             r = requests.get(plp_url)
             soup = BeautifulSoup(r.content, "html.parser")
-            a_tags = soup.find_all(class_='rd-product-data')
+            a_tags = soup.find_all(class_='product-img has-second-image')
             for pdp_url in a_tags:
                 current_time = int(now.strftime("%y%m%d"))
                 ss = BeautifulSoup(str(pdp_url), "html.parser")
-                el = ss.find(class_='style', href=True)
-                clean_url = Common.get_url(el)
+                el = ss.find(class_='product-img has-second-image', href=True)
+                clean_url = el['href']
+                # clean_url = Common.get_url(el)
                 db.insert_rows(db_file=db.db_file(), table_name=db.db_table()[0], log=False, columns=[
                     {
                         'column': 'url_address',

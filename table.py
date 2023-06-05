@@ -1,17 +1,16 @@
-from common import Common
+from pdp_elements import PDPElements
 
 
 class PriceTable:
 
     @staticmethod
     def main(soup):
-        price_table = soup.find_all(class_='p-tile product_tile')
+        price = PDPElements.price(soup)
+        title = PDPElements.title(soup)
         variants = []
-        for variant in price_table:
-            variant_ = {
-                'msrp': Common.clean_price(variant['data-msrp']),
-                'price': Common.clean_price(variant['data-price']),
-                'product_name': variant.find(class_='sizedesc').text
-            }
-            variants.append(variant_)
+        variant_ = {
+            'price': price,
+            'product_name': title
+        }
+        variants.append(variant_)
         return variants
