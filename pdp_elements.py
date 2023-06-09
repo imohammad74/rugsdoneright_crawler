@@ -122,6 +122,8 @@ class PDPElements:
         product_price_box = soup.find(class_='price-wrapper')
         product_price = product_price_box.find(class_='product-price').text
         price = product_price.replace('$', '')
+        if price == 'Request Aavailability& Best Price':
+            price = 0
         return price
 
     @staticmethod
