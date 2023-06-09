@@ -1,13 +1,10 @@
-import time
-
 import requests
 from bs4 import BeautifulSoup
-
-from common import Common
+from woker import Worker
 from db import DBManagement as db
 from pdp_elements import PDPElements
 from table import PriceTable
-
+from common import Common
 
 class PDP:
     @staticmethod
@@ -94,6 +91,7 @@ class PDP:
             query = f'''INSERT INTO NoData (URLAddress, ErrorMsg) VALUES ('{url}', 'Out of stock')'''
             db.custom_query(db_file=db.db_file(), query=query)
 
-
     def __init__(self, data):
-        self.main(data)
+        max_worker = Common.max_worker()
+        Worker(fn=self.main, data=data, max_worker=max_worker)
+        # self.main(data)

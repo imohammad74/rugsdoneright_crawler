@@ -30,8 +30,7 @@ class GetAllBrandsURL:
                 ss = BeautifulSoup(str(pdp_url), "html.parser")
                 el = ss.find(class_='product-img has-second-image', href=True)
                 clean_url = el['href']
-                # clean_url = Common.get_url(el)
-                db.insert_rows(db_file=db.db_file(), table_name=db.db_table()[0], log=False, columns=[
+                db.insert_rows(db_file=db.db_file(), table_name=db.db_table()[0], log=False, unique_row=True, columns=[
                     {
                         'column': 'url_address',
                         'value': clean_url,

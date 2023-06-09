@@ -52,10 +52,7 @@ class Main:
         else:
             urls = db.fetch_datas(db_file=db.db_file(), table_name=db.db_table()[0], all_columns=False,
                                   columns=['url_address', 'brand'])
-            total_urls = len(urls)
-            for url in urls:
-                print(f'{urls.index(url)+1} of {total_urls} | {url[0]}')
-                PDP(url)
+            PDP(urls)
         db.custom_query(db_file=db.db_file(), query=Common.sql_replace(table_name=db.db_table()[2])[0])
         db.custom_query(db_file=db.db_file(), query=Common.sql_replace(table_name=db.db_table()[2])[1])
 
