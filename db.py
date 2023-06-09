@@ -119,6 +119,7 @@ class DBManagement:
         columns example : [{'column':'col1', 'value':'value1'}]
         """
         log = kwargs['log'] if 'log' in kwargs else False
+        unique_rows = kwargs['unique_row'] if 'unique_row' in kwargs else False
         conn = None
         if len(columns) > 1:
             columns_names = tuple([column['column'] for column in columns])
@@ -130,11 +131,12 @@ class DBManagement:
             conn = sqlite3.connect(db_file)
             c = conn.cursor()
             query = f'''INSERT INTO {table_name} {columns_names} VALUES {columns_values}'''
+            if unique_rows:
+                query = f'''INSERT OR IGNORE INTO {table_name} {columns_names} VALUES {columns_values}'''
             try:
-                query = f'''INSERT INTO {table_name} {columns_names} VALUES {columns_values}'''
+                # query = f'''INSERT INTO {table_name} {columns_names} VALUES {columns_values}'''
                 c.execute(query)
                 conn.commit()
-                # c.close()
                 if log is True:
                     print(f'{"All rows added." if len(columns_names) > 1 else "Row added."}')
             except Error as e:
